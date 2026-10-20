@@ -153,7 +153,6 @@ void	ftCheckInt(const std::string &param){
 	std::cout << "C'est un entier" << std::endl;
 }
 
-// caractere
 void ftCheckChar(const std::string &param){
 	if (param.length() == 1 && !(param[0] >= '0' && param[0] <= '9')){
 		char value = param[0];
