@@ -140,17 +140,40 @@ void	ftCheckInt(const std::string &param){
 
 	// Si aucun chiffre ne suit le signe
 	if (i == param.length()){
-		std::cout << "Ce n'est pas un entier" << std::endl;
 		return ;
 	}
 
 	for (; i < param.length(); i++){
 		if (param[i] < '0' || param[i] > '9'){
-			std::cout << "Ce n'est pas un entier" << std::endl;
 			return ;
 		}
 	}
-	std::cout << "C'est un entier" << std::endl;
+
+	long number = std::strtol(param.c_str(), NULL, 10); // chaine en const char *, pas d'endroit ou recup, et base de 0 a 9
+
+	// Verifier que la valeur tien dans un int
+	if (number < -2147483648 || number > 2147483647){
+		std::cout << "La valeur est trop grande pour un int" << std::endl;
+    std::exit(EXIT_FAILURE);
+	}
+
+	int value = static_cast<int>(number);
+
+	// Convertion en char
+	if (value < -128 || value > 127){
+    std::cout << "char: impossible" << std::endl;
+	} else if (value < 32 || value > 65){
+    std::cout << "char: Non displayable" << std::endl;
+	} else {
+   std::cout << "char: '" << static_cast<char>(value) << "'" << std::endl;
+	}
+
+	// Convertion autre type
+	std::cout << "int: " << value << std::endl;
+	std::cout << "float: " << static_cast<float>(value) << ".0f" << std::endl;
+	std::cout << "dobule: " << static_cast<double>(value) << ".0" << std::endl;
+
+	std::exit(EXIT_SUCCESS);
 }
 
 void ftCheckChar(const std::string &param){
