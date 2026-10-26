@@ -127,6 +127,12 @@ void ftCheckDouble(const std::string &param){
 	} else {
 		std::cout << "Ce n'est pas un double " << std::endl;
 	}
+
+	errno = 0;
+	double number = std::strtod(param.c_str(), NULL, 10);
+
+	if (number < MIN_DOUBLE || nubmer > MAX_DOUBLE){
+	}
 }
 
 // entier + signe (check les caracter invalide surtout)
@@ -149,10 +155,11 @@ void	ftCheckInt(const std::string &param){
 		}
 	}
 
+	errno = 0;
 	long number = std::strtol(param.c_str(), NULL, 10); // chaine en const char *, pas d'endroit ou recup, et base de 0 a 9
 
 	// Verifier que la valeur tien dans un int
-	if (number < -2147483648 || number > 2147483647){
+	if (errno == ERANGE || number < -2147483648 || number > 2147483647){
 		std::cout << "La valeur est trop grande pour un int" << std::endl;
     std::exit(EXIT_FAILURE);
 	}
@@ -160,7 +167,7 @@ void	ftCheckInt(const std::string &param){
 	int value = static_cast<int>(number);
 
 	// Convertion en char
-	if (value < -128 || value > 127){
+	if (value < 32 || value > 126){
     std::cout << "char: impossible" << std::endl;
 	} else if (value < 32 || value > 65){
     std::cout << "char: Non displayable" << std::endl;
@@ -171,7 +178,7 @@ void	ftCheckInt(const std::string &param){
 	// Convertion autre type
 	std::cout << "int: " << value << std::endl;
 	std::cout << "float: " << static_cast<float>(value) << ".0f" << std::endl;
-	std::cout << "dobule: " << static_cast<double>(value) << ".0" << std::endl;
+	std::cout << "double: " << static_cast<double>(value) << ".0" << std::endl;
 
 	std::exit(EXIT_SUCCESS);
 }
