@@ -152,7 +152,6 @@ void ftCheckDouble(const std::string &param){
 	} else{
 	  std::cout << "float: " << static_cast<float>(value) << "f" << std::endl;
 	}
-	std::cout << "float: " << static_cast<float>(value) << ".0f" << std::endl;
 	std::cout << "double: " << static_cast<double>(value) << ".0" << std::endl;
 
 	std::exit(EXIT_SUCCESS);
@@ -235,5 +234,14 @@ void ScalarConverter::convert(const std::string &param){
 	ftCheckInt(param);
 	ftCheckDouble(param);
 	ftCheckFloat(param);
-
+	//if (isChar(param))
+	//    convertChar(param);
+	//else if (isInt(param))
+	//    convertInt(param);
+	//else if (isFloat(param))
+	//    convertFloat(param);
+	//else if (isDouble(param))
+	//    convertDouble(param);
+	//else
+	//    std::cout << "Invalid input" << std::endl;
 }
