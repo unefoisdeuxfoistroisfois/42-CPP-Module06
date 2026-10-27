@@ -81,11 +81,36 @@ void ftCheckFloat(const std::string &param){
 	}
 
 	// Si c'est exactement un point et au moins un chiffre
-	if (points == 1 && chiffres > 0 && f == 1){
-		std::cout << "C'est un float" << std::endl;
-	} else {
-		std::cout << "Ce n'est pas un float " << std::endl;
+	if (points != 1 || chiffres == 0 || f != 1){
+	  return ;
 	}
+
+	errno = 0;
+	double number = std::strtod(param.c_str(), NULL);
+
+	if (errno == ERANGE || number < -FLT_MAX || number > FLT_MAX){
+    std::cout << "Valeur hors limites pour un float" << std::endl;
+		std::exit(EXIT_FAILURE);
+	}
+
+	float value = static_cast<float>(number);
+
+	if (static_cast<double>(value) < CHAR_MIN || static_cast<double>(value) > CHAR_MAX){
+    std::cout << "char: impossible" << std::endl;
+	} else if (value < 32 || value >= 127){
+    std::cout << "char: Non displayable" << std::endl;
+	} else {
+   std::cout << "char: '" << static_cast<char>(value) << "'" << std::endl;
+	}
+
+	if (value < INT_MIN || value > INT_MAX){
+		std::cout << "int: impossible" << std::endl;
+	} else {
+		std::cout << "int: " << static_cast<int>(value) << std::endl;
+	}
+
+	std::cout << "float: " << value << "f" << std::endl;
+	std::cout << "double: " << static_cast<double>(value) << std::endl;
 }
 
 void ftCheckDouble(const std::string &param){
@@ -100,7 +125,6 @@ void ftCheckDouble(const std::string &param){
 
 	// Si aucun chiffre ne suit le signe
 	if (i == param.length()){
-		std::cout << "Ce n'est pas un double" << std::endl;
 		return ;
 	}
 
@@ -114,7 +138,6 @@ void ftCheckDouble(const std::string &param){
 		} else if (param[i] == '.'){
 			points ++;
 		} else{
-			std::cout << "Ce n'est pas un double" << std::endl;
 			return; 
 		}
 		i++;
@@ -181,7 +204,7 @@ void	ftCheckInt(const std::string &param){
 	long number = std::strtol(param.c_str(), NULL, 10); // chaine en const char *, pas d'endroit ou recup, et base de 0 a 9
 
 	// Verifier que la valeur tien dans un int
-	if (errno == ERANGE || number < -2147483648 || number > 2147483647){
+	if (errno == ERANGE || number < INT_MIN || number > INT_MAX){
 		std::cout << "La valeur est trop grande pour un int" << std::endl;
     std::exit(EXIT_FAILURE);
 	}
