@@ -23,7 +23,6 @@ ScalarConverter::~ScalarConverter(){
 	std::cout << "ScalarConverter destructor called" << std::endl;
 }
 
-
 bool ftCheckSpecFloat(const std::string &param){
 	if (param == "nanf" || param == "+inff" || param == "-inff"){
 	  std::cout << "C'est un float spécial" << std::endl;
@@ -114,25 +113,49 @@ void ftCheckDouble(const std::string &param){
 			chiffres ++;
 		} else if (param[i] == '.'){
 			points ++;
-		} else {
+		} else{
 			std::cout << "Ce n'est pas un double" << std::endl;
 			return; 
 		}
 		i++;
 	}
 
-	// Si c'est exactement un point et au moins un chiffre
-	if (points == 1 && chiffres > 0){
-		std::cout << "C'est un double" << std::endl;
-	} else {
-		std::cout << "Ce n'est pas un double " << std::endl;
+	if (points != 1 || chiffres == 0){
+		return ;
 	}
 
 	errno = 0;
-	double number = std::strtod(param.c_str(), NULL, 10);
+	double value = std::strtod(param.c_str(), NULL);
 
-	if (number < MIN_DOUBLE || nubmer > MAX_DOUBLE){
+	if (errno == ERANGE){
+		std::cout << "Valeur trop grande" << std::endl;
+		std::exit(EXIT_FAILURE);
 	}
+
+	// La valeur peux elle etre afficher par un char si oui est il affichable ?
+	if (value < CHAR_MIN || value > CHAR_MAX){
+	    std::cout << "char: impossible" << std::endl;
+	} else if (value < 32 || value >= 127){
+	    std::cout << "char: Non displayable" << std::endl;
+	} else{
+	    std::cout << "char: '" << static_cast<char>(value) << "'" << std::endl;
+	}
+
+	if (value < INT_MIN || value > INT_MAX){
+		std::cout << "int: impossible" << std::endl;
+	} else {
+		std::cout << "int: " << static_cast<int>(value) << std::endl;
+	}
+
+	if (value < -FLT_MAX || value > FLT_MAX)	{
+	  std::cout << "float: impossible" << std::endl;
+	} else{
+	  std::cout << "float: " << static_cast<float>(value) << "f" << std::endl;
+	}
+	std::cout << "float: " << static_cast<float>(value) << ".0f" << std::endl;
+	std::cout << "double: " << static_cast<double>(value) << ".0" << std::endl;
+
+	std::exit(EXIT_SUCCESS);
 }
 
 // entier + signe (check les caracter invalide surtout)
@@ -166,10 +189,10 @@ void	ftCheckInt(const std::string &param){
 
 	int value = static_cast<int>(number);
 
-	// Convertion en char
-	if (value < 32 || value > 126){
+	// Convertion en char et si caractere affichable
+	if (value < CHAR_MIN || value > CHAR_MAX){
     std::cout << "char: impossible" << std::endl;
-	} else if (value < 32 || value > 65){
+	} else if (value < 32 || value > 126){
     std::cout << "char: Non displayable" << std::endl;
 	} else {
    std::cout << "char: '" << static_cast<char>(value) << "'" << std::endl;
