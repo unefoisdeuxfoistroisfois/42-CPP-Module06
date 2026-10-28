@@ -103,14 +103,21 @@ void ftCheckFloat(const std::string &param){
    std::cout << "char: '" << static_cast<char>(value) << "'" << std::endl;
 	}
 
-	if (value < INT_MIN || value > INT_MAX){
+	if (static_cast<double>(value) < INT_MIN || static_cast<double>(value) > INT_MAX){
 		std::cout << "int: impossible" << std::endl;
 	} else {
 		std::cout << "int: " << static_cast<int>(value) << std::endl;
 	}
 
-	std::cout << "float: " << value << "f" << std::endl;
-	std::cout << "double: " << static_cast<double>(value) << std::endl;
+	double integerPart;
+
+	if (std::modf(value, &integerPart) == 0.0){
+		std::cout << "float: " << value << ".0f" << std::endl;
+		std::cout << "double: " << static_cast<double>(value) << ".0" << std::endl;
+	} else {
+		std::cout << "float: "  << value << "f" << std::endl;
+		std::cout << "double: " << static_cast<double>(value) << std::endl;
+	}
 }
 
 void ftCheckDouble(const std::string &param){
@@ -170,12 +177,26 @@ void ftCheckDouble(const std::string &param){
 		std::cout << "int: " << static_cast<int>(value) << std::endl;
 	}
 
+	// passafe de doubel a float peut arrondir docn on verifier les 2 separ
+	double integerPart;
+
 	if (value < -FLT_MAX || value > FLT_MAX)	{
 	  std::cout << "float: impossible" << std::endl;
 	} else{
-	  std::cout << "float: " << static_cast<float>(value) << "f" << std::endl;
+
+		float floatValue = static_cast<float>(value);
+		if (std::modf(floatValue, &integerPart) == 0.0){
+	  	std::cout << "float: " << floatValue << ".0f" << std::endl;
+		} else {
+	  	std::cout << "float: " << floatValue << "f" << std::endl;
+		}
 	}
-	std::cout << "double: " << static_cast<double>(value) << ".0" << std::endl;
+
+	if (std::modf(value, &integerPart) == 0.0){
+		std::cout << "double: " << value << ".0" << std::endl;
+	}else {
+		std::cout << "double: " << value << std::endl;
+	}
 
 	std::exit(EXIT_SUCCESS);
 }
