@@ -24,23 +24,60 @@ ScalarConverter::~ScalarConverter(){
 }
 
 bool ftCheckSpecFloat(const std::string &param){
-	if (param == "nanf" || param == "+inff" || param == "-inff"){
-	  std::cout << "C'est un float spécial" << std::endl;
-	  return (true);
-    //return param == "nan" || param == "+inf" || param == "-inf";
-	} else {
+	if (param != "nanf" && param != "+inff" && param != "-inff"){
 		return (false);
 	}
+	std::cout << "char: impossible" << std::endl;
+  std::cout << "int: impossible" << std::endl;
+
+  if (param == "nanf"){
+  	std::cout << "float: nanf" << std::endl;
+    std::cout << "double: nan" << std::endl;
+  } else if (param == "+inff"){
+    std::cout << "float: +inff" << std::endl;
+    std::cout << "double: +inf" << std::endl;
+  } else {
+    std::cout << "float: -inff" << std::endl;
+    std::cout << "double: -inf" << std::endl;
+  }
+	return (true);
 }
 
 bool ftCheckSpecDouble(const std::string &param){
-	if (param == "nan" || param == "+inf" || param == "-inf"){
-	  std::cout << "C'est un double spécial" << std::endl;
-	  return (true);
-    //return param == "nan" || param == "+inf" || param == "-inf";
-	} else {
+	if (param != "nan" && param != "+inf" && param != "-inf"){
 		return (false);
 	}
+	std::cout << "char: impossible" << std::endl;
+  std::cout << "int: impossible" << std::endl;
+
+  if (param == "nan"){
+  	std::cout << "float: nanf" << std::endl;
+    std::cout << "double: nan" << std::endl;
+  } else if (param == "+inf"){
+    std::cout << "float: +inff" << std::endl;
+    std::cout << "double: +inf" << std::endl;
+  } else {
+    std::cout << "float: -inff" << std::endl;
+    std::cout << "double: -inf" << std::endl;
+  }
+	return (true);
+}
+
+std::string formatNumber(double value){
+  std::ostringstream stream;
+  stream << value;
+
+  std::string result = stream.str();
+
+  if (result.find('.') == std::string::npos){
+		size_t exponent = result.find_first_of("eE");
+		if (exponent == std::string::npos){
+    	result = result + ".0";
+		} else {
+    	result.insert(exponent, ".0");
+		}
+  }
+  return (result);
 }
 
 void ftCheckFloat(const std::string &param){
@@ -56,7 +93,6 @@ void ftCheckFloat(const std::string &param){
 
 	// Si aucun chiffre ne suit le signe
 	if (i == param.length()){
-		std::cout << "Ce n'est pas un float" << std::endl;
 		return ;
 	}
 
@@ -70,7 +106,6 @@ void ftCheckFloat(const std::string &param){
 		} else if (param[i] == '.'){
 			points ++;
 		} else {
-			std::cout << "Ce n'est pas un float" << std::endl;
 			return; 
 		}
 		i++;
@@ -94,13 +129,15 @@ void ftCheckFloat(const std::string &param){
 	}
 
 	float value = static_cast<float>(number);
+	double integerPart;
+	std::modf(value, &integerPart);
 
-	if (static_cast<double>(value) < CHAR_MIN || static_cast<double>(value) > CHAR_MAX){
-    std::cout << "char: impossible" << std::endl;
-	} else if (value < 32 || value >= 127){
-    std::cout << "char: Non displayable" << std::endl;
+	if (integerPart < CHAR_MIN || integerPart > CHAR_MAX){
+	  std::cout << "char: impossible" << std::endl;
+	} else if (integerPart < 32 || integerPart >= 127){
+	  std::cout << "char: Non displayable" << std::endl;
 	} else {
-   std::cout << "char: '" << static_cast<char>(value) << "'" << std::endl;
+	  std::cout << "char: '" << static_cast<char>(integerPart) << "'" << std::endl;
 	}
 
 	if (static_cast<double>(value) < INT_MIN || static_cast<double>(value) > INT_MAX){
@@ -109,15 +146,8 @@ void ftCheckFloat(const std::string &param){
 		std::cout << "int: " << static_cast<int>(value) << std::endl;
 	}
 
-	double integerPart;
-
-	if (std::modf(value, &integerPart) == 0.0){
-		std::cout << "float: " << value << ".0f" << std::endl;
-		std::cout << "double: " << static_cast<double>(value) << ".0" << std::endl;
-	} else {
-		std::cout << "float: "  << value << "f" << std::endl;
-		std::cout << "double: " << static_cast<double>(value) << std::endl;
-	}
+	std::cout << "float: " << formatNumber(value) << "f" << std::endl;
+	std::cout << "double: " << formatNumber(static_cast<double>(value)) << std::endl;
 }
 
 void ftCheckDouble(const std::string &param){
@@ -163,12 +193,15 @@ void ftCheckDouble(const std::string &param){
 	}
 
 	// La valeur peux elle etre afficher par un char si oui est il affichable ?
-	if (value < CHAR_MIN || value > CHAR_MAX){
-	    std::cout << "char: impossible" << std::endl;
-	} else if (value < 32 || value >= 127){
-	    std::cout << "char: Non displayable" << std::endl;
-	} else{
-	    std::cout << "char: '" << static_cast<char>(value) << "'" << std::endl;
+	double integerPart;
+	std::modf(value, &integerPart);
+
+	if (integerPart < CHAR_MIN || integerPart > CHAR_MAX){
+	  std::cout << "char: impossible" << std::endl;
+	} else if (integerPart < 32 || integerPart >= 127){
+	  std::cout << "char: Non displayable" << std::endl;
+	} else {
+	  std::cout << "char: '" << static_cast<char>(integerPart) << "'" << std::endl;
 	}
 
 	if (value < INT_MIN || value > INT_MAX){
@@ -178,25 +211,14 @@ void ftCheckDouble(const std::string &param){
 	}
 
 	// passafe de doubel a float peut arrondir docn on verifier les 2 separ
-	double integerPart;
-
-	if (value < -FLT_MAX || value > FLT_MAX)	{
+	if (value < -FLT_MAX || value > FLT_MAX){
 	  std::cout << "float: impossible" << std::endl;
-	} else{
+	} else {
+	  float floatValue = static_cast<float>(value);
 
-		float floatValue = static_cast<float>(value);
-		if (std::modf(floatValue, &integerPart) == 0.0){
-	  	std::cout << "float: " << floatValue << ".0f" << std::endl;
-		} else {
-	  	std::cout << "float: " << floatValue << "f" << std::endl;
-		}
+	  std::cout << "float: " << formatNumber(floatValue) << "f" << std::endl;
 	}
-
-	if (std::modf(value, &integerPart) == 0.0){
-		std::cout << "double: " << value << ".0" << std::endl;
-	}else {
-		std::cout << "double: " << value << std::endl;
-	}
+	std::cout << "double: " << formatNumber(value) << std::endl;
 
 	std::exit(EXIT_SUCCESS);
 }
@@ -243,8 +265,8 @@ void	ftCheckInt(const std::string &param){
 
 	// Convertion autre type
 	std::cout << "int: " << value << std::endl;
-	std::cout << "float: " << static_cast<float>(value) << ".0f" << std::endl;
-	std::cout << "double: " << static_cast<double>(value) << ".0" << std::endl;
+	std::cout << "float: " << formatNumber(static_cast<float>(value)) << "f" << std::endl;
+	std::cout << "double: " << formatNumber(static_cast<double>(value)) << std::endl;
 
 	std::exit(EXIT_SUCCESS);
 }
@@ -278,14 +300,4 @@ void ScalarConverter::convert(const std::string &param){
 	ftCheckInt(param);
 	ftCheckDouble(param);
 	ftCheckFloat(param);
-	//if (isChar(param))
-	//    convertChar(param);
-	//else if (isInt(param))
-	//    convertInt(param);
-	//else if (isFloat(param))
-	//    convertFloat(param);
-	//else if (isDouble(param))
-	//    convertDouble(param);
-	//else
-	//    std::cout << "Invalid input" << std::endl;
 }
