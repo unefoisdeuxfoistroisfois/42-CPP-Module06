@@ -11,7 +11,7 @@ ScalarConverter::ScalarConverter(const ScalarConverter &src){
 }
 
 ScalarConverter &ScalarConverter::operator=(const ScalarConverter &rhs){
-	std::cout << "ScalarConverter assignement operator called" << std::endl;
+	std::cout << "ScalarConverter assignment operator called" << std::endl;
 
 	if (this != &rhs){
 	}
@@ -124,7 +124,7 @@ void ftCheckFloat(const std::string &param){
 	double number = std::strtod(param.c_str(), NULL);
 
 	if (errno == ERANGE || number < -FLT_MAX || number > FLT_MAX){
-    std::cout << "Valeur hors limites pour un float" << std::endl;
+    std::cout << " Value out of range for float "<< std::endl;
 		std::exit(EXIT_FAILURE);
 	}
 
@@ -188,7 +188,7 @@ void ftCheckDouble(const std::string &param){
 	double value = std::strtod(param.c_str(), NULL);
 
 	if (errno == ERANGE){
-		std::cout << "Valeur trop grande" << std::endl;
+		std::cout << " Out of range "<< std::endl;
 		std::exit(EXIT_FAILURE);
 	}
 
@@ -248,7 +248,7 @@ void	ftCheckInt(const std::string &param){
 
 	// Verifier que la valeur tien dans un int
 	if (errno == ERANGE || number < INT_MIN || number > INT_MAX){
-		std::cout << "La valeur est trop grande pour un int" << std::endl;
+		std::cout << " Value out of range for int "<< std::endl;
     std::exit(EXIT_FAILURE);
 	}
 
@@ -287,13 +287,12 @@ void ftCheckChar(const std::string &param){
 void ftCheckNotEmpty(const std::string &param){
 
 	if (param.empty()){
-		std::cout << " Agument vide" << std::endl;
+		std::cout << "Empty argument" << std::endl;
     std::exit(EXIT_FAILURE);
 	}
 }
 
 void ScalarConverter::convert(const std::string &param){
-	std::cout << "Argument reçu : " << param << std::endl;
 
 	ftCheckNotEmpty(param);
 	ftCheckChar(param);
