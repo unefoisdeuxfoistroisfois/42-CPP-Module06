@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <climits>
 #include <cfloat>
+#include <cmath>
 
 class ScalarConverter{
 	private:
