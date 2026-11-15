@@ -1,0 +1,5 @@
+main
+*.pdf
+*.dSYM
+.DS_Store
+.vscode/
