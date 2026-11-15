@@ -210,7 +210,7 @@ void ftCheckDouble(const std::string &param){
 		std::cout << "int: " << static_cast<int>(value) << std::endl;
 	}
 
-	// passafe de doubel a float peut arrondir docn on verifier les 2 separ
+	// passer de double a float peut arrondir donc on verifier les 2 séparé
 	if (value < -FLT_MAX || value > FLT_MAX){
 	  std::cout << "float: impossible" << std::endl;
 	} else {
