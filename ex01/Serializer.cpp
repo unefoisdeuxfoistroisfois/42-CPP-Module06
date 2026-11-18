@@ -24,7 +24,7 @@ Serializer::~Serializer(){
 }
 
 uintptr_t Serializer::serialize(Data *ptr){
-	uintptr_t stock = reinterpret_cast<uintptr_t>(ptr);
+	uintptr_t stock = reinterpret_cast<uintptr_t>(ptr); // Adress de l'objet, qu'on va convertir en unsigned int
 
 	return (stock);
 }
