@@ -65,16 +65,17 @@ bool ftCheckSpecDouble(const std::string &param){
 
 std::string formatNumber(double value){
   std::ostringstream stream;
-  stream << value;
+  stream << value; // ecirt dans le flux
+	// std::cout << value Ecrit dans le terminal 
 
   std::string result = stream.str();
 
-  if (result.find('.') == std::string::npos){
+  if (result.find('.') == std::string::npos){ // Si find ne trouve pas le mot il renvoie un npos qui lui veut dire pas trouvé
 		size_t exponent = result.find_first_of("eE");
 		if (exponent == std::string::npos){
-    	result = result + ".0";
+    	result = result + ".0"; // 42 -> 42.0.
 		} else {
-    	result.insert(exponent, ".0");
+    	result.insert(exponent, ".0"); // 1e+06 -> 1.0e+06 
 		}
   }
   return (result);
@@ -140,10 +141,10 @@ void ftCheckFloat(const std::string &param){
 	  std::cout << "char: '" << static_cast<char>(integerPart) << "'" << std::endl;
 	}
 
-	if (static_cast<double>(value) < INT_MIN || static_cast<double>(value) > INT_MAX){
-		std::cout << "int: impossible" << std::endl;
+	if (integerPart < INT_MIN || integerPart > INT_MAX){
+	    std::cout << "int: impossible" << std::endl;
 	} else {
-		std::cout << "int: " << static_cast<int>(value) << std::endl;
+	    std::cout << "int: " << static_cast<int>(integerPart) << std::endl;
 	}
 
 	std::cout << "float: " << formatNumber(value) << "f" << std::endl;
@@ -204,10 +205,10 @@ void ftCheckDouble(const std::string &param){
 	  std::cout << "char: '" << static_cast<char>(integerPart) << "'" << std::endl;
 	}
 
-	if (value < INT_MIN || value > INT_MAX){
+	if (integerPart < INT_MIN || integerPart > INT_MAX){
 		std::cout << "int: impossible" << std::endl;
 	} else {
-		std::cout << "int: " << static_cast<int>(value) << std::endl;
+		std::cout << "int: " << static_cast<int>(integerPart) << std::endl;
 	}
 
 	// passer de double a float peut arrondir donc on verifier les 2 séparé
