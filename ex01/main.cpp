@@ -2,31 +2,31 @@
 
 void ftPrintDataStruct(Data *data){
 
-	std::cout << " Data struct "<< std::endl;
-	std::cout << " number: " << data->number << std::endl;
-	std::cout << " name: " << data->name << std::endl;
+	std::cout << "Data struct "<< std::endl;
+	std::cout << "number: " << data->number << std::endl;
+	std::cout << "name: " << data->name << std::endl;
 }
 
 int	main(){
 
-	Data pointer;
+	Data obj;
 
-	pointer.number = 25;
-	pointer.name = "Bradley";
+	obj.number = 25;
+	obj.name = "Bradley";
 
-	ftPrintDataStruct(&pointer);
+	ftPrintDataStruct(&obj);
 
-	uintptr_t rawAdress = Serializer::serialize(&pointer);
-	Data *restoredPointer = Serializer::deserialize(rawAdress);
+	uintptr_t rawAddress = Serializer::serialize(&obj);
+	Data *restoredPointer = Serializer::deserialize(rawAddress);
 
-  std::cout << "Same pointer: " << (restoredPointer == &pointer) << std::endl; //si les 2 poitneur on la meme adresse
+  std::cout << "Same pointer: " << (restoredPointer == &obj) << std::endl; //si les 2 poitneur on la meme adresse
 
 	ftPrintDataStruct(restoredPointer);
 
 	std::cout << std::endl;
 
-	std::cout << "Original pointer: " << &pointer << std::endl;
-	std::cout << "Address as integer: " << rawAdress << std::endl;
+	std::cout << "Original pointer: " << &obj << std::endl;
+	std::cout << "Address as integer: " << rawAddress << std::endl;
 	std::cout << "Restored pointer: " << restoredPointer << std::endl;
 
 	// avec allocation
